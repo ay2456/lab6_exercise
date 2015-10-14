@@ -6,6 +6,7 @@ import urllib2
 import os.path
 import nibabel
 import json
+from pprint import pprint
 
 def download_data(url):
     """
@@ -135,8 +136,22 @@ def main(data.json):
     ----
     Use the functions you've implemented above
     """
-    
-    return NotImplemented
+    with open('example_data.json') as data_file:
+        data = json.load(data_file)
+    pprint(data)
+        
+    url = str(data['url'])
+    name = str(data['name'])
+    sha1 = str(data['sha1'])
+    fname = '../data/' + name
+
+    if not os.path.isfile(fname):
+        d = download(url) 
+	save_data(d,fname)
+	if verify_data(d, sha1):
+	    bio_data = load_parsed_data(fname) 	
+
+    return bio_data
 
 ### Add lines here that guarantees main() is run with example_data.json when
 ### called as a script
